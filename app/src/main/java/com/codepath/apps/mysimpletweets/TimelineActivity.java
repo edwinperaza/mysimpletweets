@@ -45,7 +45,7 @@ public class TimelineActivity extends AppCompatActivity {
                         @Override
                         public boolean onLoadMore(int page, int totalItemCount) {
                             populateTimeLine(lowestTweetUid);
-                            return true; // only if more loaded, else return false
+                            return true;
                             }
                     });
 
@@ -58,6 +58,7 @@ public class TimelineActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
         populateTimeLine(lowestTweetUid);
     }
 
@@ -67,8 +68,10 @@ public class TimelineActivity extends AppCompatActivity {
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
                 ArrayList<Tweet> tweets = Tweet.fromJSONArray(json);
                 aTweets.addAll(tweets);
+
                 int size = tweets.size();
                 long lastUid = tweets.get(size-1).getUid();
+
                 if (lastUid < lowestTweetUid) {
                     lowestTweetUid = lastUid;
                 }
@@ -85,12 +88,6 @@ public class TimelineActivity extends AppCompatActivity {
         } else {
             client.getHomeTimeline(handler, lowestValue - 1);
         }
-
-
-
-
-
-
     }
 
 }

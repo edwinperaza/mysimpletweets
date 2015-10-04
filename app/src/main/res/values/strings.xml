@@ -6,6 +6,7 @@
     <string name="action_setting">Settings</string>
     <string name="title_activity_timeline">Home Timeline</string>
     <string name="Username">Example Name</string>
+    <string name="timestamp">15 minutes ago</string>
 
 
 </resources>

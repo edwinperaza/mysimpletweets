@@ -2,6 +2,7 @@ package com.codepath.apps.mysimpletweets;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -29,6 +30,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
     private long lowestTweetUid = Long.MAX_VALUE;
     private User currentUser;
     private JsonHttpResponseHandler moreTweetsHandler;
+    private SwipeRefreshLayout swipeContainer;
 
 
     @Override
@@ -45,7 +47,15 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
         lvTweets.setAdapter(aTweets);
 
         client = TwitterApplication.getRestClient();
-        MoreTweetsHandler();
+
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getNewerTweets();
+            }
+        });
+
 
         lvTweets.setOnScrollListener(new EndlessScrollListener() {
             @Override
@@ -67,26 +77,13 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
             }
         });
 
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
         getOlderTweets();
-    }
-
-    private void MoreTweetsHandler() {
-        moreTweetsHandler = new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                ArrayList<Tweet> newTweets = Tweet.fromJSONArray(response);
-                ArrayList<Tweet> list = new ArrayList<Tweet>(newTweets);
-                list.addAll(tweets);
-                tweets = list;
-                //tweets.addAll(newTweets);
-                aTweets.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Log.d("DEBUG", errorResponse.toString());
-            }
-        };
     }
 
     private void getNewerTweets() {
@@ -103,7 +100,6 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
                     for (int i = 0; i < newTweets.size(); i++) {
                         aTweets.insert(newTweets.get(i),0);
                     }
-                    Log.d("Debugggggg:", newTweets.toString());
                 }
             }
 
@@ -112,6 +108,8 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
                 Log.e("DEBUG", errorResponse.toString());
             }
         });
+
+        swipeContainer.setRefreshing(false);
     }
 
     private void getOlderTweets() {
@@ -133,6 +131,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
                 Log.d("DEBUG", errorResponse.toString());
             }
         });
+        swipeContainer.setRefreshing(false);
     }
 
 

@@ -1,4 +1,4 @@
-package com.codepath.apps.mysimpletweets;
+package com.codepath.apps.mysimpletweets.Activities;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -11,6 +11,12 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.codepath.apps.mysimpletweets.Dialogs.ComposeTweetDialog;
+import com.codepath.apps.mysimpletweets.Helpers.EndlessScrollListener;
+import com.codepath.apps.mysimpletweets.R;
+import com.codepath.apps.mysimpletweets.Adapters.TweetsArrayAdapter;
+import com.codepath.apps.mysimpletweets.Application.TwitterApplication;
+import com.codepath.apps.mysimpletweets.Net.TwitterClient;
 import com.codepath.apps.mysimpletweets.models.Tweet;
 import com.codepath.apps.mysimpletweets.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;

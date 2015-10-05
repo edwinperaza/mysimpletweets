@@ -1,19 +1,22 @@
-package com.codepath.apps.mysimpletweets;
+package com.codepath.apps.mysimpletweets.Dialogs;
 
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.codepath.apps.mysimpletweets.R;
 import com.codepath.apps.mysimpletweets.models.User;
 import com.squareup.picasso.Picasso;
 
@@ -55,19 +58,21 @@ public class ComposeTweetDialog extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+
         View view = inflater.inflate(R.layout.fragment_compose_tweet, container);
 
         Bundle args = getArguments();
         String title = args.getString("title", "Compose Tweet");
         User user = (User) args.getSerializable("user");
-        getDialog().setTitle(title);
 
         etComposeTweet = (EditText) view.findViewById(R.id.etComposeTweet);
         etComposeTweet.requestFocus();
+
         btTweet = (Button) view.findViewById(R.id.btTweet);
 
         TextView tvUsername = (TextView) view.findViewById(R.id.tvUsername);
-        tvUsername.setText(user.getScreenName());
+        tvUsername.setText(user.getName());
 
         ImageView ivUserProfileImage = (ImageView) view.findViewById(R.id.ivUserProfile);
         Picasso.with(getContext())
@@ -83,11 +88,16 @@ public class ComposeTweetDialog extends DialogFragment {
         });
 
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-
         return view;
     }
 
-
-
+    @Override
+    public void onStart() {
+        super.onStart();
+        Dialog dialog = getDialog();
+        if (dialog != null) {
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        }
+    }
 
 }

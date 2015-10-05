@@ -1,4 +1,4 @@
-package com.codepath.apps.mysimpletweets;
+package com.codepath.apps.mysimpletweets.Helpers;
 
 import android.content.Context;
 import android.text.Layout;
@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 
 public class LinkifiedTextView extends TextView {
+
     public LinkifiedTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }

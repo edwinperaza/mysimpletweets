@@ -1,6 +1,8 @@
-package com.codepath.apps.mysimpletweets;
+package com.codepath.apps.mysimpletweets.Application;
 
 import android.content.Context;
+
+import com.codepath.apps.mysimpletweets.Net.TwitterClient;
 
 public class TwitterApplication extends com.activeandroid.app.Application {
 	private static Context context;

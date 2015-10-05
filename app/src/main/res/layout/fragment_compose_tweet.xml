@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ivCancel"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignBottom="@+id/tvUsername"
+        android:scaleType="fitXY"
+        android:background="@drawable/ic_cancel_tw" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvUsername"
+        android:layout_alignParentTop="true"
+        android:layout_alignBottom="@+id/ivUserProfile"
+        android:layout_toLeftOf="@+id/ivUserProfile"
+        android:padding="10dp"
+
+        android:gravity="center_vertical"
+        android:layout_toRightOf="@+id/ivCancel"
+        android:layout_toEndOf="@+id/ivCancel" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/ivUserProfile"
+        android:contentDescription="@string/twitter_profile_image"
+        android:background="@drawable/ic_launcher"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/etComposeTweet"
+        android:inputType="textMultiLine"
+        android:hint="@string/hint_etComposeTweet"
+        android:layout_below="@+id/tvUsername"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:minHeight="100dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/post_tweet"
+        android:id="@+id/btTweet"
+        android:layout_below="@+id/etComposeTweet"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+</RelativeLayout>

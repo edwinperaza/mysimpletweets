@@ -7,6 +7,11 @@
     <string name="title_activity_timeline">Home Timeline</string>
     <string name="Username">Example Name</string>
     <string name="timestamp">15 minutes ago</string>
+    <string name="post_tweet">Tweet</string>
+    <string name="twitter_profile_image">Profile Image</string>
+    <string name="hint_etComposeTweet">Whats Happening?</string>
+    <string name="fragment_compose_title">Whats Happening?</string>
+    <string name="compose_action">Compose tweet</string>
 
 
 </resources>

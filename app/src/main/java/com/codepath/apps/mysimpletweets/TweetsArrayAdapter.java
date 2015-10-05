@@ -9,10 +9,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.text.ParseException;
 import com.codepath.apps.mysimpletweets.models.Tweet;
 import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
@@ -24,6 +24,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         public TextView tvUserName;
         public TextView tvBody;
         public TextView tvTimestamp;
+        public TextView tvScreenName;
     }
 
     public TweetsArrayAdapter(Context context, List<Tweet> tweets) {
@@ -40,6 +41,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
 
             viewHolder.ivProfileImage = (ImageView) convertView.findViewById(R.id.ivProfileImage);
             viewHolder.tvUserName = (TextView) convertView.findViewById(R.id.tvUserName);
+            viewHolder.tvScreenName = (TextView) convertView.findViewById(R.id.tvScreenName);
             viewHolder.tvBody = (TextView) convertView.findViewById(R.id.tvBody);
             viewHolder.tvTimestamp = (TextView) convertView.findViewById(R.id.tvTimestamp);
 
@@ -48,7 +50,8 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             viewHolder = (TweetItemViewHolder) convertView.getTag();
         }
 
-        viewHolder.tvUserName.setText(tweet.getUser().getScreenName());
+        viewHolder.tvUserName.setText(tweet.getUser().getName());
+        viewHolder.tvScreenName.setText("@"+tweet.getUser().getScreenName());
         viewHolder.tvBody.setText(tweet.getBody());
         viewHolder.tvTimestamp.setText(getRelativeTimeAgo(tweet.getCreatedAt()));
 

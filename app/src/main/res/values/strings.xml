@@ -12,6 +12,8 @@
     <string name="hint_etComposeTweet">What\'s Happening?</string>
     <string name="fragment_compose_title">What\'s Happening?</string>
     <string name="compose_action">Compose tweet</string>
+    <string name="home_timeline">Home</string>
+    <string name="mentions_timeline">Mentions</string>
 
 
 </resources>

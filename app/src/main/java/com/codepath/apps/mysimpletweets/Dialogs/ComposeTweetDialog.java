@@ -6,7 +6,6 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,15 +16,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.codepath.apps.mysimpletweets.Application.TwitterApplication;
 import com.codepath.apps.mysimpletweets.Net.TwitterClient;
 import com.codepath.apps.mysimpletweets.R;
 import com.codepath.apps.mysimpletweets.models.User;
-import com.loopj.android.http.JsonHttpResponseHandler;
 import com.squareup.picasso.Picasso;
-
-import org.apache.http.Header;
-import org.json.JSONObject;
 
 public class ComposeTweetDialog extends DialogFragment {
 
@@ -42,11 +36,11 @@ public class ComposeTweetDialog extends DialogFragment {
         void onFinishComposeDialog(String inputText);
     }
 
-    public static ComposeTweetDialog newInstance(String title, User user) {
+    public static ComposeTweetDialog newInstance(String title,User user) {
         ComposeTweetDialog dialog = new ComposeTweetDialog();
         Bundle args = new Bundle();
         args.putString("title", title);
-        //args.putSerializable("user",user);
+        args.putSerializable("user", user);
         dialog.setArguments(args);
 
         return dialog;
@@ -63,6 +57,25 @@ public class ComposeTweetDialog extends DialogFragment {
         }
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+//        client = TwitterApplication.getRestClient();
+//        client.getCurrentUser(new JsonHttpResponseHandler() {
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+//                user = User.fromJson(response);
+//            }
+//
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+//                Log.d("DEBUG", errorResponse.toString());
+//            }
+//        });
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -72,9 +85,8 @@ public class ComposeTweetDialog extends DialogFragment {
 
         Bundle args = getArguments();
         String title = args.getString("title", "Compose Tweet");
-        //User user = (User) args.getSerializable("user");
-        client = TwitterApplication.getRestClient();
-        getUser();
+        User user = (User) args.getSerializable("user");
+
 
 
             etComposeTweet=(EditText)view.findViewById(R.id.etComposeTweet);
@@ -110,17 +122,7 @@ public class ComposeTweetDialog extends DialogFragment {
         }
 
     public void getUser() {
-        client.getCurrentUser(new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                user = User.fromJson(response);
-            }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Log.d("DEBUG", errorResponse.toString());
-            }
-        });
     }
 
 }

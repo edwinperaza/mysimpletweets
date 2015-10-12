@@ -20,12 +20,12 @@ public class MentionsTimelineFragment extends TweetsListFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         client = TwitterApplication.getRestClient();
-        populateMentionsTimeline();
+
     }
 
-   // @Override
-    private void populateMentionsTimeline (){
-        client.getMentionsTimeline(new JsonHttpResponseHandler(){
+    @Override
+    public void populateTimeline (long sinceId, long maxId){
+        client.getMentionsTimeline(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
                 tweets.addAll(Tweet.fromJSONArray(json));
@@ -36,5 +36,5 @@ public class MentionsTimelineFragment extends TweetsListFragment {
                 Log.d("DEBUG:", errorResponse.toString());
             }
         });
-    }
+    };
 }

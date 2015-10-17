@@ -27,8 +27,6 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        //Get the screenName from the activity that launches this
-        String screenName = getIntent().getStringExtra("screen_name");
         user = (User) getIntent().getSerializableExtra("user");
         if (user == null){
 
@@ -45,7 +43,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             //Create de user timeline fragment
-            UserTimelineFragment userTimelineFragment = UserTimelineFragment.newInstance(screenName, user);
+            UserTimelineFragment userTimelineFragment = UserTimelineFragment.newInstance(user);
             // Display user timeline Fragment within this activity (dynamically)
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.flContainer, userTimelineFragment);

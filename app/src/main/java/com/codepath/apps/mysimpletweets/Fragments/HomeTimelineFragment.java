@@ -1,13 +1,9 @@
 package com.codepath.apps.mysimpletweets.Fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.view.View;
 
-import com.codepath.apps.mysimpletweets.Activities.ProfileActivity;
-import com.codepath.apps.mysimpletweets.Adapters.TweetsArrayAdapter;
 import com.codepath.apps.mysimpletweets.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -23,17 +19,6 @@ public class HomeTimelineFragment extends TweetsListFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        aTweets.setImageProfileClickListener(new TweetsArrayAdapter.OnImageProfileClickListener() {
-            @Override
-            public void onImageProfileClick(View itemView, int position) {
-                Tweet tweet = aTweets.getItem(position);
-                Intent intent = new Intent(getContext(), ProfileActivity.class);
-                intent.putExtra("screen_name", tweet.getUser().getScreenName());
-                intent.putExtra("user", tweet.getUser());
-                startActivity(intent);
-            }
-        });
-
     }
 
     @Override
@@ -43,15 +28,14 @@ public class HomeTimelineFragment extends TweetsListFragment {
         }
         client.getHomeTimelineBefore(oldestTweetUid, new JsonHttpResponseHandler() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                ArrayList<Tweet> newTweets = Tweet.fromJSONArray(response);
-                tweets.addAll(newTweets);
+            public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
+                tweets.addAll(Tweet.fromJSONArray(json));
                 aTweets.notifyDataSetChanged();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Log.d("DEBUG POPULATE TIMELINE", errorResponse.toString());
+                Log.d("HOMETL POPULATE ERROR: ", errorResponse.toString());
             }
         });
     };

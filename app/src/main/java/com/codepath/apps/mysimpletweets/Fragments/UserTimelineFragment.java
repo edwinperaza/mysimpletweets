@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.codepath.apps.mysimpletweets.Application.TwitterApplication;
-import com.codepath.apps.mysimpletweets.Net.TwitterClient;
 import com.codepath.apps.mysimpletweets.models.Tweet;
 import com.codepath.apps.mysimpletweets.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -17,19 +15,14 @@ import org.json.JSONObject;
 
 public class UserTimelineFragment extends TweetsListFragment{
 
-    private TwitterClient client;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //Get the client
-        client = TwitterApplication.getRestClient();
     }
 
-    public static UserTimelineFragment newInstance(String screen_name, User user) {
+    public static UserTimelineFragment newInstance(User user) {
         UserTimelineFragment userTimelineFragment = new UserTimelineFragment();
         Bundle args = new Bundle();
-        args.putString("screen_name", screen_name);
         args.putSerializable("user", user);
         userTimelineFragment.setArguments(args);
         return userTimelineFragment;
@@ -37,8 +30,9 @@ public class UserTimelineFragment extends TweetsListFragment{
 
     @Override
     public void populateTimeline(long sinceId, long maxId) {
-        String screenName = getArguments().getString("screen_name");
-        client.getUserTimeline(screenName, new JsonHttpResponseHandler() {
+        User u = (User) getArguments().getSerializable("user");
+
+        client.getUserTimeline(u.getScreenName(), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
                 tweets.addAll(Tweet.fromJSONArray(json));

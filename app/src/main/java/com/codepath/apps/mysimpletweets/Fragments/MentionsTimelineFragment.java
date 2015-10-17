@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.codepath.apps.mysimpletweets.Application.TwitterApplication;
-import com.codepath.apps.mysimpletweets.Net.TwitterClient;
 import com.codepath.apps.mysimpletweets.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -14,17 +12,18 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class MentionsTimelineFragment extends TweetsListFragment {
-    private TwitterClient client;
+   // private TwitterClient client;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        client = TwitterApplication.getRestClient();
-        populateTimeline(1,1);
+        //client = TwitterApplication.getRestClient();
+        //populateTimeline(1,1);
     }
 
     @Override
     public void populateTimeline (long sinceId, long maxId){
+
         client.getMentionsTimeline(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
@@ -33,7 +32,7 @@ public class MentionsTimelineFragment extends TweetsListFragment {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Log.d("DEBUG:", errorResponse.toString());
+                Log.d("MENT_TL POPULATE ERROR:", errorResponse.toString());
             }
         });
     };

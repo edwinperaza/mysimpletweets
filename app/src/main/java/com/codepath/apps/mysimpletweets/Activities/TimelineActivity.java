@@ -1,5 +1,6 @@
 package com.codepath.apps.mysimpletweets.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -66,6 +67,14 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
 
     }
 
+    private void profileView() {
+
+        Intent i = new Intent(this, ProfileActivity.class);
+        i.putExtra("screen_name", currentUser.getScreenName());
+        i.putExtra("user", currentUser);
+        startActivity(i);
+    }
+
     private void composeTweet() {
 
         FragmentManager manager = getSupportFragmentManager();
@@ -84,8 +93,11 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
 
         int id = item.getItemId();
         if (id == R.id.tweet_compose) {
-                composeTweet();
-                return true;
+            composeTweet();
+            return true;
+        } else if (id == R.id.miProfile) {
+            profileView();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -96,7 +108,6 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
         client.postTweet(inputText, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-               // homeTimelineFragment = (HomeTimelineFragment) getSupportFragmentManager().findFragmentById(R.id.fr)
                 homeTimelineFragment.populateNewTweetsTimeline();
             }
 

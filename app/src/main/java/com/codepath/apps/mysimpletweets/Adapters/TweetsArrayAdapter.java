@@ -20,6 +20,16 @@ import java.util.Locale;
 
 public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
 
+    private OnImageProfileClickListener imageProfileClickListener;
+
+    public void setImageProfileClickListener(OnImageProfileClickListener imageProfileClickListener) {
+        this.imageProfileClickListener = imageProfileClickListener;
+    }
+
+    public interface OnImageProfileClickListener {
+        void onImageProfileClick(View itemView, int position);
+    }
+
     public class TweetItemViewHolder {
         public ImageView ivProfileImage;
         public TextView tvUserName;
@@ -35,7 +45,9 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Tweet tweet = getItem(position);
-        TweetItemViewHolder viewHolder;
+        final int  pos = position;
+
+        final TweetItemViewHolder viewHolder;
         if (convertView == null){
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_tweet, parent, false);
             viewHolder = new TweetItemViewHolder();
@@ -45,6 +57,17 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             viewHolder.tvScreenName = (TextView) convertView.findViewById(R.id.tvScreenName);
             viewHolder.tvBody = (TextView) convertView.findViewById(R.id.tvBody);
             viewHolder.tvTimestamp = (TextView) convertView.findViewById(R.id.tvTimestamp);
+
+
+            viewHolder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (imageProfileClickListener != null) {
+                        imageProfileClickListener.onImageProfileClick(viewHolder.ivProfileImage, pos);
+                    }
+                }
+            });
+
 
             convertView.setTag(viewHolder);
         }else{
@@ -60,6 +83,8 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         Picasso.with(getContext())
                 .load(tweet.getUser().getProfileImageUrl())
                 .into(viewHolder.ivProfileImage);
+
+
 
         return convertView;
     }

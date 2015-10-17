@@ -52,6 +52,7 @@ public class TweetsListFragment extends Fragment {
             }
         });
 
+
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -74,6 +75,8 @@ public class TweetsListFragment extends Fragment {
         aTweets = new TweetsArrayAdapter(getActivity(), tweets);
 
         client = TwitterApplication.getRestClient();
+
+
     }
 
     public void populateNewTweetsTimeline() {}

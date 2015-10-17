@@ -12,8 +12,14 @@
     <string name="hint_etComposeTweet">What\'s Happening?</string>
     <string name="fragment_compose_title">What\'s Happening?</string>
     <string name="compose_action">Compose tweet</string>
+    <string name="my_profile">Profile</string>
     <string name="home_timeline">Home</string>
     <string name="mentions_timeline">Mentions</string>
+    <string name="tvUserName">Edwin Peraza</string>
+    <string name="tvScreenName">\@edwinperaza</string>
+    <string name="tvDescription">Profile Description...</string>
+    <string name="tvFollowers">10 Followers</string>
+    <string name="tvFollowing">8 Following</string>
 
 
 </resources>

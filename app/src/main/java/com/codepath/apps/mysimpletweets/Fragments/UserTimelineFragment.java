@@ -31,13 +31,18 @@ public class UserTimelineFragment extends TweetsListFragment{
     }
 
     @Override
-    public void populateTimeline(long sinceId, long maxId) {
+    public void populateTimeline() {
         User u = (User) getArguments().getSerializable("user");
 
-        client.getUserTimeline(u.getScreenName(), new JsonHttpResponseHandler() {
+        if (!tweets.isEmpty()) {
+            oldestTweetUid = tweets.get(tweets.size() - 1).getUid();
+        }
+
+        client.getUserTimeline(u.getScreenName(),oldestTweetUid, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
                 tweets.addAll(Tweet.fromJSONArray(json));
+                aTweets.notifyDataSetChanged();
             }
 
             @Override

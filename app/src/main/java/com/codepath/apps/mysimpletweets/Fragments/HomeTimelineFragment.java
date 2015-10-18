@@ -22,10 +22,12 @@ public class HomeTimelineFragment extends TweetsListFragment {
     }
 
     @Override
-    public void populateTimeline (long sinceId, long maxId){
+    public void populateTimeline (){
+
         if (!tweets.isEmpty()) {
             oldestTweetUid = tweets.get(tweets.size() - 1).getUid();
         }
+
         client.getHomeTimelineBefore(oldestTweetUid, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {

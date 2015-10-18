@@ -12,22 +12,24 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class MentionsTimelineFragment extends TweetsListFragment {
-   // private TwitterClient client;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //client = TwitterApplication.getRestClient();
-        //populateTimeline(1,1);
     }
 
     @Override
-    public void populateTimeline (long sinceId, long maxId){
+    public void populateTimeline (){
 
-        client.getMentionsTimeline(new JsonHttpResponseHandler() {
+        if (!tweets.isEmpty()) {
+            oldestTweetUid = tweets.get(tweets.size() - 1).getUid();
+        }
+
+        client.getMentionsTimeline(oldestTweetUid, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
                 tweets.addAll(Tweet.fromJSONArray(json));
+                aTweets.notifyDataSetChanged();
             }
 
             @Override

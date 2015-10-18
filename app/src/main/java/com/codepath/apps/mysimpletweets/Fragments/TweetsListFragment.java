@@ -53,7 +53,7 @@ public class TweetsListFragment extends Fragment {
                 @Override
                 public boolean onLoadMore(int page, int totalItemCount) {
                     if (isNetworkAvailable()) {
-                        populateTimeline(1, oldestTweetUid);
+                        populateTimeline();
                         swipeContainer.setRefreshing(false);
                         return true;
                     } else {
@@ -74,7 +74,7 @@ public class TweetsListFragment extends Fragment {
             });
             swipeConfigureColor();
 
-            populateTimeline(1, oldestTweetUid);
+            populateTimeline();
         }
         return view;
     }
@@ -91,7 +91,7 @@ public class TweetsListFragment extends Fragment {
 
     public void populateNewTweetsTimeline() {}
 
-    public void populateTimeline(long sinceId, long maxId) {}
+    public void populateTimeline() {}
 
     // Configure the refreshing colors
     public void swipeConfigureColor(){

@@ -1,5 +1,8 @@
 package com.codepath.apps.mysimpletweets.Fragments;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.codepath.apps.mysimpletweets.Adapters.TweetsArrayAdapter;
 import com.codepath.apps.mysimpletweets.Application.TwitterApplication;
@@ -43,26 +47,35 @@ public class TweetsListFragment extends Fragment {
         lvTweets = (ListView) view.findViewById(R.id.lvTweets);
         lvTweets.setAdapter(aTweets);
 
-        lvTweets.setOnScrollListener(new EndlessScrollListener() {
-            @Override
-            public boolean onLoadMore(int page, int totalItemCount) {
-                populateTimeline(1, oldestTweetUid);
-                swipeContainer.setRefreshing(false);
-                return true;
-            }
-        });
+        if (isNetworkAvailable()) {
 
-        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                populateNewTweetsTimeline();
-                swipeContainer.setRefreshing(false);
-            }
-        });
-        swipeConfigureColor();
+            lvTweets.setOnScrollListener(new EndlessScrollListener() {
+                @Override
+                public boolean onLoadMore(int page, int totalItemCount) {
+                    if (isNetworkAvailable()) {
+                        populateTimeline(1, oldestTweetUid);
+                        swipeContainer.setRefreshing(false);
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            });
 
-        populateTimeline(1, oldestTweetUid);
+            swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+            swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    if (isNetworkAvailable()) {
+                        populateNewTweetsTimeline();
+                        swipeContainer.setRefreshing(false);
+                    }
+                }
+            });
+            swipeConfigureColor();
+
+            populateTimeline(1, oldestTweetUid);
+        }
         return view;
     }
 
@@ -86,6 +99,17 @@ public class TweetsListFragment extends Fragment {
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
+    }
+
+
+    protected Boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        boolean networkConnection = activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+        if (!networkConnection) {
+            Toast.makeText(getActivity(), "No Internet Connection", Toast.LENGTH_LONG).show();
+        }
+        return networkConnection;
     }
 
 

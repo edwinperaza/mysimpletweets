@@ -1,6 +1,9 @@
 package com.codepath.apps.mysimpletweets.Activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -51,34 +54,39 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
         //Find de Sliding tabStrip and attach the tabStrip to viewpager
         PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         tabStrip.setViewPager(viewpager);
+        if (isNetworkAvailable()) {
+            client = TwitterApplication.getRestClient();
+            client.getCurrentUser(new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    currentUser = User.fromJson(response);
+                }
 
-        client = TwitterApplication.getRestClient();
-        client.getCurrentUser(new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                currentUser = User.fromJson(response);
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Log.d("DEBUG", errorResponse.toString());
-            }
-        });
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    Log.d("DEBUG", errorResponse.toString());
+                }
+            });
+        }
 
     }
 
     private void profileView() {
-
-        Intent i = new Intent(this, ProfileActivity.class);
-        i.putExtra("user", currentUser);
-        startActivity(i);
+        if (isNetworkAvailable()) {
+            Intent i = new Intent(this, ProfileActivity.class);
+            i.putExtra("user", currentUser);
+            startActivity(i);
+        }
     }
 
     private void composeTweet() {
 
-        FragmentManager manager = getSupportFragmentManager();
-        ComposeTweetDialog dialog = ComposeTweetDialog.newInstance(getString(R.string.fragment_compose_title), currentUser);
-        dialog.show(manager, "fragment_compose_tweet");
+        if (isNetworkAvailable()) {
+            FragmentManager manager = getSupportFragmentManager();
+            ComposeTweetDialog dialog = ComposeTweetDialog.newInstance(getString(R.string.fragment_compose_title), currentUser);
+            dialog.show(manager, "fragment_compose_tweet");
+        }
+
     }
 
     @Override
@@ -103,22 +111,35 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
 
     @Override
     public void onFinishComposeDialog(String inputText) {
-        if (!inputText.isEmpty()) {
-            final String it = inputText;
-            client.postTweet(inputText, new JsonHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    Toast.makeText(TimelineActivity.this, it, Toast.LENGTH_SHORT).show();
-                }
+        if (isNetworkAvailable()) {
+            if (!inputText.isEmpty()) {
+                final String it = inputText;
+                client.postTweet(inputText, new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                        Toast.makeText(TimelineActivity.this, it, Toast.LENGTH_SHORT).show();
+                    }
 
-                @Override
-                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                    Toast.makeText(TimelineActivity.this, "We can not send your tweet", Toast.LENGTH_SHORT).show();
-                    Log.d("DEBUG", errorResponse.toString());
-                }
-            });
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                        Toast.makeText(TimelineActivity.this, "We can not send your tweet", Toast.LENGTH_SHORT).show();
+                        Log.d("DEBUG", errorResponse.toString());
+                    }
+                });
+            }else{
+                Toast.makeText(TimelineActivity.this, "You can not post an empty Tweet", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
+    private Boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        boolean networkConnection = activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+        if (!networkConnection) {
+            Toast.makeText(TimelineActivity.this, "No Internet Connection", Toast.LENGTH_LONG).show();
+        }
+        return networkConnection;
+    }
 
 }

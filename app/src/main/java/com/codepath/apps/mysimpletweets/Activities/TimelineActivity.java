@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -21,8 +20,6 @@ import com.astuetz.PagerSlidingTabStrip;
 import com.codepath.apps.mysimpletweets.Adapters.TweetsPageAdapter;
 import com.codepath.apps.mysimpletweets.Application.TwitterApplication;
 import com.codepath.apps.mysimpletweets.Dialogs.ComposeTweetDialog;
-import com.codepath.apps.mysimpletweets.Fragments.HomeTimelineFragment;
-import com.codepath.apps.mysimpletweets.Fragments.TweetsListFragment;
 import com.codepath.apps.mysimpletweets.Net.TwitterClient;
 import com.codepath.apps.mysimpletweets.R;
 import com.codepath.apps.mysimpletweets.models.User;
@@ -33,15 +30,8 @@ import org.json.JSONObject;
 
 public class TimelineActivity extends AppCompatActivity implements ComposeTweetDialog.ComposeTweetDialogListener {
 
-    private SwipeRefreshLayout swipeContainer;
-
-    private TweetsListFragment fragmentTweetsList;
-    private HomeTimelineFragment homeTimelineFragment;
-
-    private long lowestTweetUid = Long.MAX_VALUE;
-    private User currentUser;
     private TwitterClient client;
-    private JsonHttpResponseHandler moreTweetsHandler;
+    private User currentUser;
     MenuItem miActionProgressItem;
 
     @Override
@@ -57,12 +47,13 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
         //Find de Sliding tabStrip and attach the tabStrip to viewpager
         PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         tabStrip.setViewPager(viewpager);
+
         if (isNetworkAvailable()) {
             client = TwitterApplication.getRestClient();
             client.getCurrentUser(new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    currentUser = User.fromJson(response);
+                    currentUser = User.fromJSON(response);
                 }
 
                 @Override

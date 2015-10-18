@@ -63,18 +63,4 @@ public class User implements Serializable{
         return  user;
     }
 
-    public static User fromJson(JSONObject jsonUser) {
-        User user = new User();
-
-        try {
-            user.name = jsonUser.getString("name");
-            user.uid = jsonUser.getLong("id");
-            user.screenName = jsonUser.getString("screen_name");
-            user.profileImageUrl = jsonUser.getString("profile_image_url");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return user;
-    }
 }

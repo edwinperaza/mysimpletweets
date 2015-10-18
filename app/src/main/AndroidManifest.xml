@@ -54,6 +54,8 @@
         </activity>
         <activity android:name=".Activities.ProfileActivity" >
         </activity>
+        <activity android:name=".Activities.FollowActivity" >
+        </activity>
     </application>
 
 </manifest>

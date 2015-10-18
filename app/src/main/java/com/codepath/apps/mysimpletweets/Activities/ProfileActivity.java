@@ -1,8 +1,10 @@
 package com.codepath.apps.mysimpletweets.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,6 +23,8 @@ public class ProfileActivity extends AppCompatActivity {
 
     TwitterClient client;
     User user;
+    TextView tvFollowers;
+    TextView tvFollowing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +39,7 @@ public class ProfileActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     user = User.fromJSON(response);
-                    getSupportActionBar().setTitle("@"+user.getScreenName());
+                    getSupportActionBar().setTitle("@" + user.getScreenName());
                     //populateProfileHeader(user);
                 }
             });
@@ -51,13 +55,33 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         populateProfileHeader(user);
+
+        tvFollowing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), FollowActivity.class);
+                intent.putExtra("user", user);
+                intent.putExtra("type", "following");
+                startActivity(intent);
+            }
+        });
+
+        tvFollowers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), FollowActivity.class);
+                intent.putExtra("user", user);
+                intent.putExtra("type", "followers");
+                startActivity(intent);
+            }
+        });
     }
 
     private void populateProfileHeader(User user){
         TextView tvName = (TextView) findViewById(R.id.tvName);
         TextView tvTagline = (TextView) findViewById(R.id.tvTagline);
-        TextView tvFollowers = (TextView) findViewById(R.id.tvFollowers);
-        TextView tvFollowing = (TextView) findViewById(R.id.tvFollowing);
+        tvFollowers = (TextView) findViewById(R.id.tvFollowers);
+        tvFollowing = (TextView) findViewById(R.id.tvFollowing);
         ImageView ivProfileImage = (ImageView) findViewById(R.id.ivProfileImage);
         tvName.setText(user.getName());
         tvTagline.setText(user.getTagline());

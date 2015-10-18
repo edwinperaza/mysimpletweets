@@ -1,9 +1,12 @@
 package com.codepath.apps.mysimpletweets.models;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class User implements Serializable{
     private String name;
@@ -62,5 +65,27 @@ public class User implements Serializable{
 
         return  user;
     }
+
+    public static List<User> fromJSONArray(JSONArray jsonArray) {
+        List<User> users = new ArrayList<>();
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            try {
+                // Convert from json
+                JSONObject userJson = jsonArray.getJSONObject(i);
+                User user = User.fromJSON(userJson);
+
+                if (user != null) {
+                    users.add(user);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                continue;
+            }
+        }
+
+        return users;
+    }
+
 
 }

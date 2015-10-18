@@ -1,6 +1,5 @@
 package com.codepath.apps.mysimpletweets.Fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.codepath.apps.mysimpletweets.Activities.ProfileActivity;
 import com.codepath.apps.mysimpletweets.Adapters.TweetsArrayAdapter;
 import com.codepath.apps.mysimpletweets.Application.TwitterApplication;
 import com.codepath.apps.mysimpletweets.Helpers.EndlessScrollListener;
@@ -76,16 +74,6 @@ public class TweetsListFragment extends Fragment {
         aTweets = new TweetsArrayAdapter(getActivity(), tweets);
 
         client = TwitterApplication.getRestClient();
-
-        aTweets.setImageProfileClickListener(new TweetsArrayAdapter.OnImageProfileClickListener() {
-            @Override
-            public void onImageProfileClick(View itemView, int position) {
-                Tweet tweet = aTweets.getItem(position);
-                Intent intent = new Intent(getContext(), ProfileActivity.class);
-                intent.putExtra("user", tweet.getUser());
-                startActivity(intent);
-            }
-        });
     }
 
     public void populateNewTweetsTimeline() {}

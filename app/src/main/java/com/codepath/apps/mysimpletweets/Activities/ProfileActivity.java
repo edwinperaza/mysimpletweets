@@ -14,7 +14,7 @@ import com.codepath.apps.mysimpletweets.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.squareup.picasso.Picasso;
 
-;import org.apache.http.Header;
+import org.apache.http.Header;
 import org.json.JSONObject;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -36,7 +36,7 @@ public class ProfileActivity extends AppCompatActivity {
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     user = User.fromJSON(response);
                     getSupportActionBar().setTitle("@"+user.getScreenName());
-                    populateProfileHeader(user);
+                    //populateProfileHeader(user);
                 }
             });
         }

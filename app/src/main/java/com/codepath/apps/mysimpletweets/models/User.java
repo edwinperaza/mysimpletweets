@@ -12,6 +12,8 @@ public class User implements Serializable{
     private String profileImageUrl;
     private String tagline;
     private int followersCount;
+    private int followingCount;
+
 
     public String getTagline() {
         return tagline;
@@ -25,7 +27,6 @@ public class User implements Serializable{
         return followingCount;
     }
 
-    private int followingCount;
 
     public String getName() {
         return name;

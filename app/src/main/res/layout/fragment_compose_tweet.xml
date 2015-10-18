@@ -55,6 +55,20 @@
         android:layout_alignParentEnd="true"
         android:minHeight="100dp" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="140"
+        android:id="@+id/tvCharacters"
+        android:layout_alignBottom="@+id/btTweet"
+        android:layout_toLeftOf="@+id/btTweet"
+        android:layout_toStartOf="@+id/btTweet"
+        android:layout_below="@+id/etComposeTweet"
+        android:gravity="center_vertical"
+        android:paddingRight="10dp"/>
+
+
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -65,5 +79,6 @@
         android:layout_alignParentEnd="true"
         android:background="#55acee"
         android:textColor="#ffffff" />
+
 
 </RelativeLayout>

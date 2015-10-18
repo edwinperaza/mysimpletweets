@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="primary_blue">#53777A</color>
+    <color name="favorite_yellow">#FFF608</color>
+    <color name="button_tweet_enable">#55ACEE</color>
+    <color name="button_tweet_disabled">#59CFFF</color>
+
+
+</resources>

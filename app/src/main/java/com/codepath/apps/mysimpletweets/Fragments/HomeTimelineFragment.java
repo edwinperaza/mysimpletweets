@@ -50,7 +50,7 @@ public class HomeTimelineFragment extends TweetsListFragment {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 ArrayList<Tweet> newTweets = Tweet.fromJSONArray(response);
-                if (!newTweets.isEmpty()) {
+                if (!newTweets.isEmpty() && newTweets.size()>0) {
                     for (int i = 0; i < newTweets.size(); i++) {
                         aTweets.insert(newTweets.get(i), 0);
                     }

@@ -70,7 +70,6 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
     private void profileView() {
 
         Intent i = new Intent(this, ProfileActivity.class);
-        i.putExtra("screen_name", currentUser.getScreenName());
         i.putExtra("user", currentUser);
         startActivity(i);
     }
@@ -104,18 +103,21 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
 
     @Override
     public void onFinishComposeDialog(String inputText) {
-        Toast.makeText(this, inputText, Toast.LENGTH_SHORT).show();
-        client.postTweet(inputText, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                homeTimelineFragment.populateNewTweetsTimeline();
-            }
+        if (!inputText.isEmpty()) {
+            final String it = inputText;
+            client.postTweet(inputText, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    Toast.makeText(TimelineActivity.this, it, Toast.LENGTH_SHORT).show();
+                }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Log.d("DEBUG", errorResponse.toString());
-            }
-        });
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    Toast.makeText(TimelineActivity.this, "We can not send your tweet", Toast.LENGTH_SHORT).show();
+                    Log.d("DEBUG", errorResponse.toString());
+                }
+            });
+        }
     }
 
 

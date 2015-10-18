@@ -1,6 +1,7 @@
 package com.codepath.apps.mysimpletweets.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.codepath.apps.mysimpletweets.Activities.ProfileActivity;
 import com.codepath.apps.mysimpletweets.R;
 import com.codepath.apps.mysimpletweets.models.Tweet;
 import com.squareup.picasso.Picasso;
@@ -20,15 +22,6 @@ import java.util.Locale;
 
 public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
 
-    private OnImageProfileClickListener imageProfileClickListener;
-
-    public void setImageProfileClickListener(OnImageProfileClickListener imageProfileClickListener) {
-        this.imageProfileClickListener = imageProfileClickListener;
-    }
-
-    public interface OnImageProfileClickListener {
-        void onImageProfileClick(View itemView, int position);
-    }
 
     public class TweetItemViewHolder {
         public ImageView ivProfileImage;
@@ -36,6 +29,8 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         public TextView tvBody;
         public TextView tvTimestamp;
         public TextView tvScreenName;
+        public ImageView ivFavorite;
+        public ImageView ivRetweet;
     }
 
     public TweetsArrayAdapter(Context context, List<Tweet> tweets) {
@@ -44,7 +39,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Tweet tweet = getItem(position);
+        final Tweet tweet = getItem(position);
         final int  pos = position;
 
         final TweetItemViewHolder viewHolder;
@@ -57,15 +52,34 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             viewHolder.tvScreenName = (TextView) convertView.findViewById(R.id.tvScreenName);
             viewHolder.tvBody = (TextView) convertView.findViewById(R.id.tvBody);
             viewHolder.tvTimestamp = (TextView) convertView.findViewById(R.id.tvTimestamp);
+            viewHolder.ivFavorite = (ImageView) convertView.findViewById(R.id.ivFavorite);
+            viewHolder.ivRetweet = (ImageView) convertView.findViewById(R.id.ivRetweet);
 
 
             viewHolder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (imageProfileClickListener != null) {
-                        imageProfileClickListener.onImageProfileClick(viewHolder.ivProfileImage, pos);
-                    }
+                    Intent i = new Intent(getContext(), ProfileActivity.class);
+                    i.putExtra("user", tweet.getUser());
+                    getContext().startActivity(i);
+
                 }
+            });
+
+            viewHolder.ivFavorite.setOnClickListener(new View.OnClickListener (){
+                @Override
+                public void onClick(View v) {
+                        viewHolder.ivFavorite.setImageResource(R.drawable.ic_favoriteon);
+                    }
+
+            });
+
+            viewHolder.ivRetweet.setOnClickListener(new View.OnClickListener (){
+                @Override
+                public void onClick(View v) {
+                    viewHolder.ivRetweet.setImageResource(R.drawable.ic_retweeton);
+                }
+
             });
 
 
@@ -83,8 +97,6 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         Picasso.with(getContext())
                 .load(tweet.getUser().getProfileImageUrl())
                 .into(viewHolder.ivProfileImage);
-
-
 
         return convertView;
     }

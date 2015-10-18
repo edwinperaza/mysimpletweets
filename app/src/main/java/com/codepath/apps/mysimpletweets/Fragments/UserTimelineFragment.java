@@ -13,6 +13,8 @@ import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class UserTimelineFragment extends TweetsListFragment{
 
     @Override
@@ -44,4 +46,33 @@ public class UserTimelineFragment extends TweetsListFragment{
             }
         });
     };
+
+    @Override
+    public void populateNewTweetsTimeline (){
+        User u = (User) getArguments().getSerializable("user");
+        long newestTweetUid = 0;
+        if (!tweets.isEmpty()) {
+            newestTweetUid = tweets.get(0).getUid();
+        }
+        client.getUserTimelineSince(newestTweetUid, u.getScreenName(), new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                ArrayList<Tweet> newTweets = Tweet.fromJSONArray(response);
+                if (!newTweets.isEmpty()) {
+                    for (int i = 0; i < newTweets.size(); i++) {
+                        aTweets.insert(newTweets.get(i), 0);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.e("DEBUG NEW TWEETS", errorResponse.toString());
+            }
+        });
+    }
+
+
+
+
 }

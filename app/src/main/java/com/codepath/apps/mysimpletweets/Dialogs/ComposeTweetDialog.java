@@ -3,9 +3,12 @@ package com.codepath.apps.mysimpletweets.Dialogs;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,9 +28,12 @@ public class ComposeTweetDialog extends DialogFragment {
 
     private EditText etComposeTweet;
     private Button btTweet;
+    private ImageView ivCancel;
+    private TextView tvCharacters;
     private ComposeTweetDialogListener listener;
     private TwitterClient client;
     private User user;
+    private static int MAX_COUNT = 140;
 
     public ComposeTweetDialog() {
     }
@@ -36,7 +42,7 @@ public class ComposeTweetDialog extends DialogFragment {
         void onFinishComposeDialog(String inputText);
     }
 
-    public static ComposeTweetDialog newInstance(String title,User user) {
+    public static ComposeTweetDialog newInstance(String title, User user) {
         ComposeTweetDialog dialog = new ComposeTweetDialog();
         Bundle args = new Bundle();
         args.putString("title", title);
@@ -60,20 +66,6 @@ public class ComposeTweetDialog extends DialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-//        client = TwitterApplication.getRestClient();
-//        client.getCurrentUser(new JsonHttpResponseHandler() {
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                user = User.fromJson(response);
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-//                Log.d("DEBUG", errorResponse.toString());
-//            }
-//        });
-
     }
 
     @Nullable
@@ -84,45 +76,88 @@ public class ComposeTweetDialog extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_compose_tweet, container);
 
         Bundle args = getArguments();
-        String title = args.getString("title", "Compose Tweet");
         User user = (User) args.getSerializable("user");
 
+        tvCharacters = (TextView) view.findViewById(R.id.tvCharacters);
+        etComposeTweet = (EditText) view.findViewById(R.id.etComposeTweet);
+        btTweet = (Button) view.findViewById(R.id.btTweet);
+        ivCancel = (ImageView) view.findViewById(R.id.ivCancel);
+        TextView tvUsername = (TextView) view.findViewById(R.id.tvUsername);
+        ImageView ivUserProfileImage = (ImageView) view.findViewById(R.id.ivUserProfile);
 
+        tvUsername.setText(user.getName());
+        etComposeTweet.requestFocus();
+        Picasso.with(getContext()).load(user.getProfileImageUrl()).into(ivUserProfileImage);
 
-            etComposeTweet=(EditText)view.findViewById(R.id.etComposeTweet);
-            etComposeTweet.requestFocus();
+        etComposeTweetValidate();
+        listeners();
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        return view;
+    }
 
-            btTweet=(Button)view.findViewById(R.id.btTweet);
-
-            TextView tvUsername = (TextView) view.findViewById(R.id.tvUsername);
-            tvUsername.setText(user.getName());
-
-            ImageView ivUserProfileImage = (ImageView) view.findViewById(R.id.ivUserProfile);
-            Picasso.with(getContext()).load(user.getProfileImageUrl()).into(ivUserProfileImage);
-
-            btTweet.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick (View view){
-                listener.onFinishComposeDialog(etComposeTweet.getText().toString());
-                dismiss();
-            }
-            });
-
-            getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-            return view;
-        }
-
-        @Override
+    @Override
     public void onStart() {
         super.onStart();
         Dialog dialog = getDialog();
         if (dialog != null) {
             dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         }
-        }
-
-    public void getUser() {
-
     }
 
+    private void etComposeTweetValidate(){
+
+        if (etComposeTweet.getText().length() == 0) {
+            btTweet.setClickable(false);
+            btTweet.setBackgroundColor(getResources().getColor(R.color.button_tweet_disabled));
+        }
+
+        etComposeTweet.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                int count = MAX_COUNT - s.length();
+                if (count < 0) {
+                    tvCharacters.setTextColor(Color.RED);
+                    btTweet.setClickable(false);
+                    btTweet.setBackgroundColor(getResources().getColor(R.color.button_tweet_disabled));
+                } else {
+                    tvCharacters.setTextColor(Color.BLACK);
+                    btTweet.setClickable(true);
+                    btTweet.setBackgroundColor(getResources().getColor(R.color.button_tweet_enable));
+                }
+
+                if (s.length() == 0) {
+                    btTweet.setClickable(false);
+                    btTweet.setBackgroundColor(getResources().getColor(R.color.button_tweet_disabled));
+                }
+                tvCharacters.setText(String.valueOf(count));
+            }
+        });
+    }
+
+    private void listeners(){
+        btTweet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onFinishComposeDialog(etComposeTweet.getText().toString());
+                dismiss();
+            }
+        });
+
+        ivCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+    }
 }

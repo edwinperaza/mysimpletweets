@@ -40,10 +40,11 @@ public class ProfileActivity extends AppCompatActivity {
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     user = User.fromJSON(response);
                     getSupportActionBar().setTitle("@" + user.getScreenName());
-                    //populateProfileHeader(user);
                 }
             });
         }
+
+        populateProfileHeader(user);
 
         if (savedInstanceState == null) {
             //Create de user timeline fragment
@@ -53,8 +54,6 @@ public class ProfileActivity extends AppCompatActivity {
             ft.replace(R.id.flContainer, userTimelineFragment);
             ft.commit();
         }
-
-        populateProfileHeader(user);
 
         tvFollowing.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,18 +74,34 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setElevation(0);
+            getSupportActionBar().setDisplayUseLogoEnabled(true);
+            getSupportActionBar().setDisplayShowTitleEnabled(true);
+            getSupportActionBar().setLogo(R.drawable.ic_twitter_logo);
+        }
+
     }
 
-    private void populateProfileHeader(User user){
+    private void populateProfileHeader(User u){
+
         TextView tvName = (TextView) findViewById(R.id.tvName);
+        TextView tvScreenName = (TextView) findViewById(R.id.tvScreenName);
         TextView tvTagline = (TextView) findViewById(R.id.tvTagline);
+        ImageView ivVerified = (ImageView) findViewById(R.id.ivVerified);
         tvFollowers = (TextView) findViewById(R.id.tvFollowers);
         tvFollowing = (TextView) findViewById(R.id.tvFollowing);
         ImageView ivProfileImage = (ImageView) findViewById(R.id.ivProfileImage);
-        tvName.setText(user.getName());
-        tvTagline.setText(user.getTagline());
-        tvFollowers.setText(user.getFollowersCount() + " Followers");
-        tvFollowing.setText(user.getFollowingCount() + " Following");
-        Picasso.with(this).load(user.getProfileImageUrl()).into(ivProfileImage);
+
+        tvName.setText(u.getName());
+        tvTagline.setText(u.getTagline());
+        tvScreenName.setText("@"+u.getScreenName());
+        tvFollowers.setText(u.getFollowersCount() + " ");
+        tvFollowing.setText(u.getFollowingCount() + " ");
+        if(u.isVerified()){
+            ivVerified.setVisibility(View.VISIBLE);
+        }
+        Picasso.with(this).load(u.getProfileImageUrl()).into(ivProfileImage);
     }
 }

@@ -63,6 +63,13 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
             });
         }
 
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setElevation(0);
+            getSupportActionBar().setDisplayUseLogoEnabled(true);
+            getSupportActionBar().setDisplayShowTitleEnabled(true);
+            getSupportActionBar().setLogo(R.drawable.ic_twitter_logo);
+        }
+
     }
 
     private void profileView() {

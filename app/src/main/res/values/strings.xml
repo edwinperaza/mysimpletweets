@@ -19,13 +19,13 @@
     <string name="tvScreenName">\@edwinperaza</string>
     <string name="tvDescription">Profile Description...</string>
 
-    <string name="tvFollowers">10 Followers</string>
-    <string name="Followers">Followers</string>
+    <string name="tvFollowers">10</string>
+    <string name="Followers">FOLLOWERS</string>
     <string name="error_fetch_followers">Error Fetching Followers</string>
 
 
-    <string name="Following">Following</string>
-    <string name="tvFollowing">8 Following</string>
+    <string name="Following">FOLLOWINGS</string>
+    <string name="tvFollowing">8</string>
     <string name="error_fetch_followings">Error Fetching Followings</string>
 
 </resources>

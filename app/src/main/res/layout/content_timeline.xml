@@ -8,24 +8,18 @@
     tools:showIn="@layout/activity_timeline"
     tools:context="com.codepath.apps.mysimpletweets.Activities.TimelineActivity">
 
-
-    <!--<fragment-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:name="com.codepath.apps.mysimpletweets.Fragments.HomeTimelineFragment"-->
-        <!--android:id="@+id/fragment_timeline"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:layout_alignParentLeft="true"-->
-        <!--android:layout_alignParentStart="true"-->
-        <!--tools:layout="@layout/fragment_tweets_list" />-->
-
-
     <com.astuetz.PagerSlidingTabStrip
         android:id="@+id/tabs"
-        app:pstsShouldExpand="true"
+        style="@style/MyCustomTabLayout"
         app:pstsTextAllCaps="true"
         android:layout_width="match_parent"
-        android:layout_height="48dp" />
+        android:layout_height="48dp"
+        app:pstsShouldExpand="true"
+        app:pstsIndicatorHeight="4dp"
+        app:pstsUnderlineHeight="1dp"
+        app:pstsUnderlineColor="@color/light_gray_tabs"
+        app:pstsDividerColor="@color/gray_divider"
+        app:pstsIndicatorColor="@color/twitter_principal"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"

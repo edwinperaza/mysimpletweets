@@ -9,7 +9,7 @@
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -34,9 +34,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ivProfileImage"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:textColor="@android:color/black"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             tools:text="@string/tvUserName" />
 
@@ -45,25 +45,37 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvName"
-            android:textColor="@android:color/black"
+            android:textColor="@color/gray_divider"
             android:textSize="16sp"
-            tools:text="@string/tvScreenName" />
+            tools:text="@string/tvScreenName"
+            android:layout_marginTop="5dp" />
 
         <TextView
             android:id="@+id/tvTagline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/ivProfileImage"
-            android:layout_alignParentTop="true"
-            android:layout_below="@+id/tvName"
-            android:layout_toRightOf="@+id/ivProfileImage"
             android:ellipsize="end"
             android:maxLines="5"
-            android:textColor="@android:color/black"
-            android:textSize="12sp"
+            android:textColor="@color/gray_divider"
+            android:textSize="16sp"
             tools:text="@string/tvDescription"
+            android:layout_below="@+id/tvScreenName"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="true"
+            android:paddingTop="5dp" />
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:id="@+id/ivVerified"
+            android:layout_below="@+id/ivProfileImage"
+            android:layout_toRightOf="@+id/tvName"
+            android:layout_toEndOf="@+id/tvName"
+            android:src="@mipmap/ic_verified"
+            android:visibility="invisible" />
+
     </RelativeLayout>
 
     <LinearLayout
@@ -72,20 +84,41 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:layout_below="@+id/rlUserHeader"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingTop="5dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
             android:id="@+id/tvFollowers"
             android:text="@string/tvFollowers"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingLeft="3dp"
+            android:textSize="12sp"
+            android:text="@string/Followers"
+            android:id="@+id/tvFollowersText" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
+            android:textSize="14sp"
+            android:textColor="@android:color/black"
             android:id="@+id/tvFollowing"
             android:text="@string/tvFollowing"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="3dp"
+            android:textSize="12sp"
+            android:text="@string/Following"
+            android:id="@+id/tvFollowingsText" />
 
     </LinearLayout>
 

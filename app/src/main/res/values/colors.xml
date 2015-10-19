@@ -5,6 +5,11 @@
     <color name="favorite_yellow">#FFF608</color>
     <color name="button_tweet_enable">#55ACEE</color>
     <color name="button_tweet_disabled">#59CFFF</color>
+    <color name="twitter_accent">#448AFF</color>
+    <color name="twitter_principal">#55ACEE</color>
 
+    <color name="white">#FFFFFF</color>
+    <color name="gray_divider">#848484</color>
+    <color name="light_gray_tabs">#EAEAEA</color>
 
 </resources>

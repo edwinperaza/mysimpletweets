@@ -16,7 +16,11 @@ public class User implements Serializable{
     private String tagline;
     private int followersCount;
     private int followingCount;
+    private boolean verified;
 
+    public boolean isVerified() {
+        return verified;
+    }
 
     public String getTagline() {
         return tagline;
@@ -59,6 +63,7 @@ public class User implements Serializable{
             user.tagline = jsonObject.getString("description");
             user.followersCount = jsonObject.getInt("followers_count");
             user.followingCount = jsonObject.getInt("friends_count");
+            user.verified = jsonObject.getBoolean("verified");
         } catch (JSONException e) {
             e.printStackTrace();
         }

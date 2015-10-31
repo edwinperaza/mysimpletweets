@@ -41,19 +41,12 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //Get de ViewPager and set Adapter
-        ViewPager viewpager = (ViewPager) findViewById(R.id.viewpager);
-        viewpager.setAdapter(new TweetsPageAdapter(getSupportFragmentManager()));
-        //Find de Sliding tabStrip and attach the tabStrip to viewpager
-        PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-        tabStrip.setViewPager(viewpager);
-
         if (isNetworkAvailable()) {
             client = TwitterApplication.getRestClient();
             client.getCurrentUser(new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    currentUser = User.fromJSON(response);
+                    currentUser = User.saveCurrentUser(response, true);
                 }
 
                 @Override
@@ -61,7 +54,16 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
                     Log.d("DEBUG", errorResponse.toString());
                 }
             });
+        }else{
+            currentUser = User.getCurrent();
         }
+
+        //Get de ViewPager and set Adapter
+        ViewPager viewpager = (ViewPager) findViewById(R.id.viewpager);
+        viewpager.setAdapter(new TweetsPageAdapter(getSupportFragmentManager()));
+        //Find de Sliding tabStrip and attach the tabStrip to viewpager
+        PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        tabStrip.setViewPager(viewpager);
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setElevation(0);
@@ -73,11 +75,11 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
     }
 
     private void profileView() {
-        if (isNetworkAvailable()) {
+        //if (isNetworkAvailable()) {
             Intent i = new Intent(this, ProfileActivity.class);
             i.putExtra("user", currentUser);
             startActivity(i);
-        }
+        //}
     }
 
     private void composeTweet() {

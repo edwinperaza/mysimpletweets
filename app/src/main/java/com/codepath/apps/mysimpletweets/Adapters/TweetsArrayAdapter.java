@@ -90,7 +90,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
 
         viewHolder.tvUserName.setText(tweet.getUser().getName());
         viewHolder.tvScreenName.setText("@"+tweet.getUser().getScreenName());
-        viewHolder.tvBody.setText(tweet.getBody());
+        viewHolder.tvBody.setText(tweet.getText());
         viewHolder.tvTimestamp.setText(getRelativeTimeAgo(tweet.getCreatedAt()));
 
         viewHolder.ivProfileImage.setImageResource(android.R.color.transparent);

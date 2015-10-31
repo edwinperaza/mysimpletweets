@@ -38,7 +38,7 @@ public class ProfileActivity extends AppCompatActivity {
             client.getCurrentUser(new JsonHttpResponseHandler(){
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    user = User.fromJSON(response);
+                    user = User.saveCurrentUser(response,true);
                     getSupportActionBar().setTitle("@" + user.getScreenName());
                 }
             });

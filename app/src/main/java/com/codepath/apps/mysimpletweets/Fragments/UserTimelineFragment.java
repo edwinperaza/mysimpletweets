@@ -38,10 +38,10 @@ public class UserTimelineFragment extends TweetsListFragment{
             oldestTweetUid = tweets.get(tweets.size() - 1).getUid();
         }
 
-        client.getUserTimeline(u.getScreenName(),oldestTweetUid, new JsonHttpResponseHandler() {
+        client.getUserTimeline(u.getScreenName(), oldestTweetUid, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
-                tweets.addAll(Tweet.fromJSONArray(json));
+                tweets.addAll(Tweet.fromJSONArray(json, false));
                 aTweets.notifyDataSetChanged();
             }
 
@@ -51,6 +51,7 @@ public class UserTimelineFragment extends TweetsListFragment{
             }
         });
     };
+
 
     @Override
     public void populateNewTweetsTimeline (){
@@ -62,7 +63,7 @@ public class UserTimelineFragment extends TweetsListFragment{
         client.getUserTimelineSince(newestTweetUid, u.getScreenName(), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                ArrayList<Tweet> newTweets = Tweet.fromJSONArray(response);
+                ArrayList<Tweet> newTweets = Tweet.fromJSONArray(response, false);
                 if (!newTweets.isEmpty()) {
                     for (int i = 0; i < newTweets.size(); i++) {
                         aTweets.insert(newTweets.get(i), 0);
@@ -77,7 +78,12 @@ public class UserTimelineFragment extends TweetsListFragment{
         });
     }
 
-
-
+    @Override
+    public void populateTweetsFromDatabase(){
+        User u = (User) getArguments().getSerializable("user");
+//        tweets.clear();
+        tweets.addAll(Tweet.getUserTimeline(u));
+        aTweets.notifyDataSetChanged();
+    }
 
 }

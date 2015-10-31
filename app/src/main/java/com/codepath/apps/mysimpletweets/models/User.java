@@ -15,45 +15,57 @@ import java.util.List;
 
 @Table(name = "Users")
 public class User extends Model implements Serializable{
-    @Column(name = "remoteId", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
-    private String uid;
-    @Column(name = "name")
+    @Column(name = "RemoteId", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
+    private long uid;
+    @Column(name = "Name")
     private String name;
-    @Column(name = "screenName")
+    @Column(name = "ScreenName")
     private String screenName;
-    @Column(name = "profileImageUrl")
+    @Column(name = "ProfileImageUrl")
     private String profileImageUrl;
-    @Column(name = "profileBackgroundImageUrl")
+    @Column(name = "ProfileBackgroundImageUrl")
     private String profileBackgroundImageUrl;
-    @Column(name = "description")
+    @Column(name = "Description")
     private String tagline;
-    @Column(name = "statusesCount")
+    @Column(name = "StatusesCount")
     private int statusesCount;
-    @Column(name = "followersCount")
+    @Column(name = "FollowersCount")
     private int followersCount;
-    @Column(name = "followingCount")
+    @Column(name = "FollowingCount")
     private int followingCount;
-    @Column(name = "verified")
+    @Column(name = "Verified")
     private boolean verified;
+
+
+    @Column(name= "Current")
+    private boolean current;
+
 
     public User() {
         super();
     }
 
+    public static User saveCurrentUser(JSONObject userObject, boolean isCurrent) {
+        User u  = User.fromJSON(userObject);
+        u.current = isCurrent;
+        u.save();
+        return u;
+    }
 
     public static User fromJSON (JSONObject jsonObject){
         User user  = new User();
         try {
-            user.uid = jsonObject.getString("id");
+            user.uid = jsonObject.getLong("id");
             user.name = jsonObject.getString("name");
             user.screenName = jsonObject.getString("screen_name");
             user.profileImageUrl = jsonObject.getString("profile_image_url");
-            user.profileBackgroundImageUrl = jsonObject.getString("profileBackgroundImageUrl");
+            user.profileBackgroundImageUrl = jsonObject.getString("profile_background_image_url");
             user.tagline = jsonObject.getString("description");
-            user.statusesCount = jsonObject.getInt("statusesCount");
+            user.statusesCount = jsonObject.getInt("statuses_count");
             user.followersCount = jsonObject.getInt("followers_count");
             user.followingCount = jsonObject.getInt("friends_count");
             user.verified = jsonObject.getBoolean("verified");
+
             user.save();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -66,6 +78,14 @@ public class User extends Model implements Serializable{
         return new Select()
                 .from(User.class)
                 .where("id = ?", userId)
+                .executeSingle();
+    }
+
+    public static User getCurrent() {
+        return new Select()
+                .from(User.class)
+                .where("Current = ?", 1)
+                .orderBy("RANDOM()")
                 .executeSingle();
     }
 
@@ -90,7 +110,7 @@ public class User extends Model implements Serializable{
         return users;
     }
 
-    public String getUid() {
+    public long getUid() {
         return uid;
     }
 
@@ -129,4 +149,9 @@ public class User extends Model implements Serializable{
     public boolean isVerified() {
         return verified;
     }
+
+    public boolean isCurrent() {
+        return current;
+    }
+
 }

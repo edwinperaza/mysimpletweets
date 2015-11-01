@@ -1,7 +1,5 @@
 package com.codepath.apps.mysimpletweets.models;
 
-import android.util.Log;
-
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
@@ -48,7 +46,6 @@ public class Tweet extends Model {
             tweet.retweet_count = jsonObject.getInt("retweet_count");
             tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
             tweet.mention = isMention;
-            Log.d("TWEEETS:",tweet.isMention() + tweet.user.getScreenName());
             tweet.save();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -85,9 +82,9 @@ public class Tweet extends Model {
                 .execute();
     }
 
-    public static List<Tweet> getUserTimeline(User user) {
-        Log.d("DEBUUUUUUUG:",user.getId().toString());
-        return new Select().from(Tweet.class).where("User = ?", user.getId())
+    public static List<Tweet> getUserTimeline(long userId) {
+       // Log.d("USER_ID", user.getId().toString());
+        return new Select().from(Tweet.class).where("User = ?", userId)
                 .orderBy("RemoteId DESC").execute();
     }
 

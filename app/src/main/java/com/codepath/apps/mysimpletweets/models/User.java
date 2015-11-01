@@ -36,21 +36,10 @@ public class User extends Model implements Serializable{
     @Column(name = "Verified")
     private boolean verified;
 
-
-    @Column(name= "Current")
-    private boolean current;
-
-
     public User() {
         super();
     }
 
-    public static User saveCurrentUser(JSONObject userObject, boolean isCurrent) {
-        User u  = User.fromJSON(userObject);
-        u.current = isCurrent;
-        u.save();
-        return u;
-    }
 
     public static User fromJSON (JSONObject jsonObject){
         User user  = new User();
@@ -74,10 +63,17 @@ public class User extends Model implements Serializable{
         return  user;
     }
 
-    public static User getById(String userId) {
+    public static User getById(long userId) {
         return new Select()
                 .from(User.class)
-                .where("id = ?", userId)
+                .where("RemoteId = ?", userId)
+                .executeSingle();
+    }
+
+    public static User getByScreenName(String screenName) {
+        return new Select()
+                .from(User.class)
+                .where("screenName = ?", screenName)
                 .executeSingle();
     }
 
@@ -150,8 +146,5 @@ public class User extends Model implements Serializable{
         return verified;
     }
 
-    public boolean isCurrent() {
-        return current;
-    }
 
 }

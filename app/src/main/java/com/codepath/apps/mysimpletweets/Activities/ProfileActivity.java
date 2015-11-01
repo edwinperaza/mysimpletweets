@@ -23,6 +23,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     TwitterClient client;
     User user;
+    long userId;
     TextView tvFollowers;
     TextView tvFollowing;
 
@@ -31,14 +32,16 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        userId = getIntent().getLongExtra("userId",0);
         user = (User) getIntent().getSerializableExtra("user");
+
         if (user == null){
 
             client = TwitterApplication.getRestClient();
             client.getCurrentUser(new JsonHttpResponseHandler(){
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    user = User.saveCurrentUser(response,true);
+                    user = User.fromJSON(response);
                     getSupportActionBar().setTitle("@" + user.getScreenName());
                 }
             });
@@ -48,7 +51,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             //Create de user timeline fragment
-            UserTimelineFragment userTimelineFragment = UserTimelineFragment.newInstance(user);
+            UserTimelineFragment userTimelineFragment = UserTimelineFragment.newInstance(user,userId);
             // Display user timeline Fragment within this activity (dynamically)
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.flContainer, userTimelineFragment);

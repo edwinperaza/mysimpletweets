@@ -22,10 +22,11 @@ public class UserTimelineFragment extends TweetsListFragment{
         super.onCreate(savedInstanceState);
     }
 
-    public static UserTimelineFragment newInstance(User user) {
+    public static UserTimelineFragment newInstance(User user, long userId) {
         UserTimelineFragment userTimelineFragment = new UserTimelineFragment();
         Bundle args = new Bundle();
         args.putSerializable("user", user);
+        args.putLong("userId",userId);
         userTimelineFragment.setArguments(args);
         return userTimelineFragment;
     }
@@ -80,9 +81,8 @@ public class UserTimelineFragment extends TweetsListFragment{
 
     @Override
     public void populateTweetsFromDatabase(){
-        User u = (User) getArguments().getSerializable("user");
-//        tweets.clear();
-        tweets.addAll(Tweet.getUserTimeline(u));
+        long userId = getArguments().getLong("userId");
+        tweets.addAll(Tweet.getUserTimeline(userId));
         aTweets.notifyDataSetChanged();
     }
 

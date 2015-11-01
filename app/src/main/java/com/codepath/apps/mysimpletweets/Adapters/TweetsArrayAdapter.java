@@ -31,6 +31,8 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         public TextView tvScreenName;
         public ImageView ivFavorite;
         public ImageView ivRetweet;
+        public TextView tvCountRetweet;
+        public TextView tvCountFavorite;
     }
 
     public TweetsArrayAdapter(Context context, List<Tweet> tweets) {
@@ -41,8 +43,8 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
     public View getView(int position, View convertView, ViewGroup parent) {
         final Tweet tweet = getItem(position);
         final int  pos = position;
-
         final TweetItemViewHolder viewHolder;
+
         if (convertView == null){
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_tweet, parent, false);
             viewHolder = new TweetItemViewHolder();
@@ -54,6 +56,8 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             viewHolder.tvTimestamp = (TextView) convertView.findViewById(R.id.tvTimestamp);
             viewHolder.ivFavorite = (ImageView) convertView.findViewById(R.id.ivFavorite);
             viewHolder.ivRetweet = (ImageView) convertView.findViewById(R.id.ivRetweet);
+            viewHolder.tvCountRetweet = (TextView) convertView.findViewById(R.id.tvCountRetweet);
+            viewHolder.tvCountFavorite = (TextView) convertView.findViewById(R.id.tvCountFavorite);
 
 
             viewHolder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
@@ -92,14 +96,20 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         viewHolder.tvScreenName.setText("@"+tweet.getUser().getScreenName());
         viewHolder.tvBody.setText(tweet.getText());
         viewHolder.tvTimestamp.setText(getRelativeTimeAgo(tweet.getCreatedAt()));
+        viewHolder.tvCountFavorite.setText(tweet.getFavorite_count());
+        viewHolder.tvCountRetweet.setText(tweet.getRetweet_count());
+        if (tweet.isFavorited()){viewHolder.ivFavorite.setImageResource(R.drawable.ic_favoriteon); }
+        if (tweet.isRetweeted()){viewHolder.ivRetweet.setImageResource(R.drawable.ic_retweeton);}
 
         viewHolder.ivProfileImage.setImageResource(android.R.color.transparent);
         Picasso.with(getContext())
                 .load(tweet.getUser().getProfileImageUrl())
                 .into(viewHolder.ivProfileImage);
 
+
         return convertView;
     }
+
     private String getRelativeTimeAgo(String rawJsonDate) {
 
             String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
@@ -116,5 +126,5 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             }
 
             return relativeDate;
-        }
+    }
 }

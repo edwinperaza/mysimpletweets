@@ -22,6 +22,8 @@ public class Tweet extends Model {
     private String createdAt;
     @Column(name= "Favorited")
     private boolean favorited;
+    @Column(name= "Favorite_count")
+    private int favorite_count;
     @Column(name = "Retweeted")
     private boolean retweeted;
     @Column(name = "Retweet_count")
@@ -42,6 +44,7 @@ public class Tweet extends Model {
             tweet.text = jsonObject.getString("text");
             tweet.createdAt = jsonObject.getString("created_at");
             tweet.favorited = jsonObject.getBoolean("favorited");
+            tweet.favorite_count = jsonObject.getInt("favourites_count");
             tweet.retweeted = jsonObject.getBoolean("retweeted");
             tweet.retweet_count = jsonObject.getInt("retweet_count");
             tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
@@ -104,6 +107,8 @@ public class Tweet extends Model {
     public boolean isFavorited() {
         return favorited;
     }
+
+    public int getFavorite_count() { return favorite_count;}
 
     public boolean isRetweeted() {
         return retweeted;

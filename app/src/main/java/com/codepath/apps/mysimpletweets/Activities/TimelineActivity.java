@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -17,6 +18,8 @@ import android.view.MenuItem;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.astuetz.PagerSlidingTabStrip;
+import com.codepath.apps.mysimpletweets.Adapters.TweetsPageAdapter;
 import com.codepath.apps.mysimpletweets.Application.TwitterApplication;
 import com.codepath.apps.mysimpletweets.Dialogs.ComposeTweetDialog;
 import com.codepath.apps.mysimpletweets.Net.TwitterClient;
@@ -67,11 +70,11 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
         }
 
         //Get de ViewPager and set Adapter
-//        ViewPager viewpager = (ViewPager) findViewById(R.id.viewpager);
-//        viewpager.setAdapter(new TweetsPageAdapter(getSupportFragmentManager()));
-//        //Find de Sliding tabStrip and attach the tabStrip to viewpager
-//        PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-//        tabStrip.setViewPager(viewpager);
+        ViewPager viewpager = (ViewPager) findViewById(R.id.viewpager);
+        viewpager.setAdapter(new TweetsPageAdapter(getSupportFragmentManager()));
+        //Find de Sliding tabStrip and attach the tabStrip to viewpager
+        PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        tabStrip.setViewPager(viewpager);
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setElevation(0);

@@ -96,8 +96,8 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         viewHolder.tvScreenName.setText("@"+tweet.getUser().getScreenName());
         viewHolder.tvBody.setText(tweet.getText());
         viewHolder.tvTimestamp.setText(getRelativeTimeAgo(tweet.getCreatedAt()));
-        viewHolder.tvCountFavorite.setText(tweet.getFavorite_count());
-        viewHolder.tvCountRetweet.setText(tweet.getRetweet_count());
+        viewHolder.tvCountFavorite.setText(String.valueOf(tweet.getFavouritesCount()));
+        viewHolder.tvCountRetweet.setText(String.valueOf(tweet.getRetweetCount()));
         if (tweet.isFavorited()){viewHolder.ivFavorite.setImageResource(R.drawable.ic_favoriteon); }
         if (tweet.isRetweeted()){viewHolder.ivRetweet.setImageResource(R.drawable.ic_retweeton);}
 

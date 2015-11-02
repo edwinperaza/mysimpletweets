@@ -105,7 +105,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
                             @Override
                             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                                 viewHolder.ivFavorite.setImageResource(R.drawable.ic_favoriteon);
-                                tweet.setFavouritesCount(tweet.getFavouritesCount()+1);
+                                tweet.setFavouritesCount(tweet.getFavouritesCount() + 1);
                                 viewHolder.tvCountFavorite.setText(String.valueOf(tweet.getFavouritesCount()));
                                 tweet.setFavorited(true);
                             }
@@ -121,8 +121,32 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             });
 
             viewHolder.ivRetweet.setOnClickListener(new View.OnClickListener() {
+                long uid = tweet.getUid();
+                TwitterClient client;
                 @Override
                 public void onClick(View v) {
+                    client = TwitterApplication.getRestClient();
+                    client.postRetweet(uid, new JsonHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                            viewHolder.ivRetweet.setImageResource(R.drawable.ic_retweeton);
+                            tweet.setRetweetCount(tweet.getRetweetCount()+1);
+                            viewHolder.tvCountRetweet.setText(String.valueOf(tweet.getRetweetCount()));
+                            tweet.setRetweeted(true);
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                            Log.d("ClickRT", errorResponse.toString());
+                        }
+                    });
+
+
+
+
+
+
+
                     viewHolder.ivRetweet.setImageResource(R.drawable.ic_retweeton);
                 }
 

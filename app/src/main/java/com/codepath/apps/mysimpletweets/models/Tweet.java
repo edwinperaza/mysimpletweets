@@ -33,6 +33,8 @@ public class Tweet extends Model {
     @Column(name = "User", onUpdate = Column.ForeignKeyAction.CASCADE, onDelete = Column.ForeignKeyAction.CASCADE)
     private User user;
 
+
+
     public Tweet() {
         super();
     }
@@ -44,8 +46,7 @@ public class Tweet extends Model {
             tweet.text = jsonObject.getString("text");
             tweet.createdAt = jsonObject.getString("created_at");
             tweet.favorited = jsonObject.getBoolean("favorited");
-            //tweet.favorite_count = jsonObject.getInt("favourites_count");
-            tweet.favouritesCount = 1;
+            tweet.favouritesCount = jsonObject.getInt("favorite_count");
             tweet.retweeted = jsonObject.getBoolean("retweeted");
             tweet.retweetCount = jsonObject.getInt("retweet_count");
             tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
@@ -129,5 +130,19 @@ public class Tweet extends Model {
         return mention;
     }
 
+    public void setFavorited(boolean favorited) {
+        this.favorited = favorited;
+    }
 
+    public void setRetweeted(boolean retweeted) {
+        this.retweeted = retweeted;
+    }
+
+    public void setFavouritesCount(int favouritesCount) {
+        this.favouritesCount = favouritesCount;
+    }
+
+    public void setRetweetCount(int retweetCount) {
+        this.retweetCount = retweetCount;
+    }
 }

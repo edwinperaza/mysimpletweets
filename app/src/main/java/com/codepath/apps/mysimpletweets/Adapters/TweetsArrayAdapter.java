@@ -3,6 +3,7 @@ package com.codepath.apps.mysimpletweets.Adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +12,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codepath.apps.mysimpletweets.Activities.ProfileActivity;
+import com.codepath.apps.mysimpletweets.Application.TwitterApplication;
+import com.codepath.apps.mysimpletweets.Net.TwitterClient;
 import com.codepath.apps.mysimpletweets.R;
 import com.codepath.apps.mysimpletweets.models.Tweet;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.squareup.picasso.Picasso;
+
+import org.apache.http.Header;
+import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -42,10 +49,10 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final Tweet tweet = getItem(position);
-        final int  pos = position;
+        final int pos = position;
         final TweetItemViewHolder viewHolder;
 
-        if (convertView == null){
+        if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_tweet, parent, false);
             viewHolder = new TweetItemViewHolder();
 
@@ -70,15 +77,50 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
                 }
             });
 
-            viewHolder.ivFavorite.setOnClickListener(new View.OnClickListener (){
+            viewHolder.ivFavorite.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                        viewHolder.ivFavorite.setImageResource(R.drawable.ic_favoriteon);
+                    long uid = tweet.getUid();
+                    TwitterClient client;
+
+                    if (tweet.isFavorited()) {
+                        client = TwitterApplication.getRestClient();
+                        client.deleteFavorite(uid, new JsonHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                                viewHolder.ivFavorite.setImageResource(R.drawable.ic_favorite);
+                                tweet.setFavouritesCount(tweet.getFavouritesCount() - 1);
+                                viewHolder.tvCountFavorite.setText(String.valueOf(tweet.getFavouritesCount()));
+                                tweet.setFavorited(false);
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                                Log.d("ClickUnfavorite", errorResponse.toString());
+                            }
+                        });
+                    } else {
+                        client = TwitterApplication.getRestClient();
+                        client.postFavorites(uid, new JsonHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                                viewHolder.ivFavorite.setImageResource(R.drawable.ic_favoriteon);
+                                tweet.setFavouritesCount(tweet.getFavouritesCount()+1);
+                                viewHolder.tvCountFavorite.setText(String.valueOf(tweet.getFavouritesCount()));
+                                tweet.setFavorited(true);
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                                Log.d("ClickUnfavorite", errorResponse.toString());
+                            }
+                        });
                     }
 
+                }
             });
 
-            viewHolder.ivRetweet.setOnClickListener(new View.OnClickListener (){
+            viewHolder.ivRetweet.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     viewHolder.ivRetweet.setImageResource(R.drawable.ic_retweeton);
@@ -88,18 +130,22 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
 
 
             convertView.setTag(viewHolder);
-        }else{
+        } else {
             viewHolder = (TweetItemViewHolder) convertView.getTag();
         }
 
         viewHolder.tvUserName.setText(tweet.getUser().getName());
-        viewHolder.tvScreenName.setText("@"+tweet.getUser().getScreenName());
+        viewHolder.tvScreenName.setText("@" + tweet.getUser().getScreenName());
         viewHolder.tvBody.setText(tweet.getText());
         viewHolder.tvTimestamp.setText(getRelativeTimeAgo(tweet.getCreatedAt()));
         viewHolder.tvCountFavorite.setText(String.valueOf(tweet.getFavouritesCount()));
         viewHolder.tvCountRetweet.setText(String.valueOf(tweet.getRetweetCount()));
-        if (tweet.isFavorited()){viewHolder.ivFavorite.setImageResource(R.drawable.ic_favoriteon); }
-        if (tweet.isRetweeted()){viewHolder.ivRetweet.setImageResource(R.drawable.ic_retweeton);}
+        if (tweet.isFavorited()) {
+            viewHolder.ivFavorite.setImageResource(R.drawable.ic_favoriteon);
+        }
+        if (tweet.isRetweeted()) {
+            viewHolder.ivRetweet.setImageResource(R.drawable.ic_retweeton);
+        }
 
         viewHolder.ivProfileImage.setImageResource(android.R.color.transparent);
         Picasso.with(getContext())
@@ -110,21 +156,22 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         return convertView;
     }
 
+
     private String getRelativeTimeAgo(String rawJsonDate) {
 
-            String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
-            SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
-            sf.setLenient(true);
+        String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
+        SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
+        sf.setLenient(true);
 
-            String relativeDate = "";
-            try {
-                long dateMillis = sf.parse(rawJsonDate).getTime();
-                relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis,
-                        System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+        String relativeDate = "";
+        try {
+            long dateMillis = sf.parse(rawJsonDate).getTime();
+            relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis,
+                    System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
-            return relativeDate;
+        return relativeDate;
     }
 }

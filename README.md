@@ -1,84 +1,42 @@
-# Project 4 - *My Simple Tweets*
+# My Simple Tweets (Twitter API)
 
-**Name of your app** is an android app that allows a user to view home and mentions timelines, view user profiles with user timelines, as well as compose and post a new tweet. The app utilizes [Twitter REST API](https://dev.twitter.com/rest/public).
+> What's Grid Image Search?
 
-Time spent: ***** hours spent in total
+My Simple Tweets is an android app that allows a user to view home and mentions timelines, view user profiles with user timelines, as well as compose and post a new tweet.
 
-## User Stories
+> What can you do?
 
-The following **required** functionality is completed:
-* [X]	User can **sign in to Twitter** using OAuth login
-* [X]	User can **view tweets from their home timeline**
-  * [X] User is displayed the username, name, and body for each tweet
-  * [X] User is displayed the [relative timestamp](https://gist.github.com/nesquena/f786232f5ef72f6e10a7) for each tweet "8m", "7h"
-  * [X] User can view more tweets as they scroll with [infinite pagination](http://guides.codepath.com/android/Endless-Scrolling-with-AdapterViews). Number of tweets is unlimited.
-    However there are [Twitter Api Rate Limits](https://dev.twitter.com/rest/public/rate-limiting) in place.
-* [X] User can **compose and post a new tweet**
-  * [X] User can click a “Compose” icon in the Action Bar on the top right
-  * [X] User can then enter a new tweet and post this to twitter
-  * [X] User is taken back to home timeline with **new tweet visible** in timeline
-* [X] User can **switch between Timeline and Mention views using tabs**
-  * [X] User can view their home timeline tweets.
-  * [X] User can view the recent mentions of their username.
-* [X] User can navigate to **view their own profile**
-  * [X] User can see picture, tagline, # of followers, # of following, and tweets on their profile.
-* [X] User can **click on the profile image** in any tweet to see **another user's** profile.
- * [X] User can see picture, tagline, # of followers, # of following, and tweets of clicked user.
- * [X] Profile view includes that user's timeline
-* [X] User can [infinitely paginate](http://guides.codepath.com/android/Endless-Scrolling-with-AdapterViews) any of these timelines (home, mentions, user) by scrolling to the bottom
+* Sign in to Twitter using OAuth login.
+* View tweets from user home timeline.
+* User can compose and post a new tweet.
 
-The following **optional** features are implemented:
+> What are the additional features?
 
-* [X] User can **see a counter with total number of characters left for tweet** on compose tweet page
-* [X] User can **click a link within a tweet body** on tweet details view. The click will launch the web browser with relevant page opened.
-* [X] User can **pull down to refresh tweets timeline**
-* [X] User can **open the twitter app offline and see last loaded tweets**. Persisted in SQLite tweets are refreshed on every application launch. While "live data" is displayed when app can get it from Twitter API, it is also saved for use in offline mode.
-* [X] User can tap a tweet to **open a detailed tweet view**
-* [ ] User can **select "reply" from detail view to respond to a tweet**
-* [X] User can view following / followers list through the profile
-* [X] Implements robust error handling, [check if internet is available](http://guides.codepath.com/android/Sending-and-Managing-Network-Requests#checking-for-network-connectivity), handle error cases, network failures
-* [ ] When a network request is sent, user sees an [indeterminate progress indicator](http://guides.codepath.com/android/Handling-ProgressBars#progress-within-actionbar)
-* [ ] User can **"reply" to any tweet on their home timeline**
-  * [ ] The user that wrote the original tweet is automatically "@" replied in compose
-* [X] User can take favorite (and unfavorite) or retweet actions on a tweet
-* [ ] Improve the user interface and theme the app to feel twitter branded
-* [ ] User can **search for tweets matching a particular query** and see results
+* The user is able to:
+    - View more tweets as they scroll with [Infinite pagination](http://guides.codepath.com/android/Endless-Scrolling-with-AdapterViews). There are [Twitter Api Rate Limits](https://dev.twitter.com/rest/public/rate-limiting) in place
+    - Pull down to refresh tweets timeline.
+    - View The username, name, and body for each tweet.
+    - [Relative timestamp](https://gist.github.com/nesquena/f786232f5ef72f6e10a7) for each tweet "8m", "7h".
+    - Taken back to home timeline with new tweet visible in timeline
+    - Switch between Timeline and Mention views using tabs
+    - Navigate to view their own profile, besides see picture, tagline, # of followers, # of following, and tweets on their profile.
+    - Click on the profile image in any tweet to see another user's profile and see picture, tagline, # of followers, # of following, and tweets of clicked user.
+    - Tap a tweet to open a detailed tweet view.
+    - See a counter with total number of characters left for tweet** on compose tweet page.
+    - View following / followers list through the profile.
+    - Take favorite (and unfavorite) or retweet actions on a tweet.
+* Implements robust error handling, [check if internet is available](http://guides.codepath.com/android/Sending-and-Managing-Network-Requests#checking-for-network-connectivity), handle error cases, network failures
+* Persistence: User can open the twitter app offline and see last loaded tweets. Persisted in SQLite tweets are refreshed on every application launch. While "live data" is displayed when app can get it from Twitter API, it is also saved for use in offline mode.
 
-The following **bonus** features are implemented:
-
-* [ ] User can see embedded image media within the tweet detail view
-* [ ] Compose tweet functionality is build using modal overlay
-* [ ] User can view their direct messages (or send new ones)
-
-## Video Walkthrough 
-
-Here's a walkthrough of implemented user stories:
-
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
-
+## Walkthrough
+![Video Walkthrough](SimpleTweets.gif)
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
-## Notes
-
-Describe any challenges encountered while building the app.
-
-## Open-source libraries used
-
-- [Android Async HTTP](https://github.com/loopj/android-async-http) - Simple asynchronous HTTP requests with JSON parsing
-- [Picasso](http://square.github.io/picasso/) - Image loading and caching library for Android
-
 ## License
+* [Apache Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
 
-    Copyright [yyyy] [name of copyright owner]
-
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-        http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+## Acknowledgements
+* [Android Async HTTP](https://github.com/loopj/android-async-http) - Simple asynchronous HTTP requests with JSON parsing
+* [Picasso](http://square.github.io/picasso/) - Image loading and caching library for Android
+* [Twitter REST API](https://dev.twitter.com/rest/public).
+* [Active Android](http://www.activeandroid.com/) -  Persistence. 

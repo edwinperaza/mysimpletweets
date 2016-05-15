@@ -99,7 +99,8 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
         if (isNetworkAvailable()) {
             FragmentManager manager = getSupportFragmentManager();
             ComposeTweetDialog dialog = ComposeTweetDialog.newInstance(getString(R.string.fragment_compose_title), currentUser);
-            dialog.show(manager, "fragment_compose_tweet");
+
+          //  dialog.show(manager, "fragment_compose_tweet");
         }
 
     }

@@ -6,7 +6,6 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -24,7 +23,7 @@ import com.codepath.apps.mysimpletweets.R;
 import com.codepath.apps.mysimpletweets.models.User;
 import com.squareup.picasso.Picasso;
 
-public class ComposeTweetDialog extends DialogFragment {
+public class ComposeTweetDialog extends android.support.v4.app.DialogFragment {
 
     private EditText etComposeTweet;
     private Button btTweet;

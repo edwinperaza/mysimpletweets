@@ -40,7 +40,7 @@ The following **optional** features are implemented:
 * [ ] When a network request is sent, user sees an [indeterminate progress indicator](http://guides.codepath.com/android/Handling-ProgressBars#progress-within-actionbar)
 * [ ] User can **"reply" to any tweet on their home timeline**
   * [ ] The user that wrote the original tweet is automatically "@" replied in compose
-* [ ] User can take favorite (and unfavorite) or retweet actions on a tweet
+* [X] User can take favorite (and unfavorite) or retweet actions on a tweet
 * [ ] Improve the user interface and theme the app to feel twitter branded
 * [ ] User can **search for tweets matching a particular query** and see results
 
@@ -49,10 +49,6 @@ The following **bonus** features are implemented:
 * [ ] User can see embedded image media within the tweet detail view
 * [ ] Compose tweet functionality is build using modal overlay
 * [ ] User can view their direct messages (or send new ones)
-
-The following **additional** features are implemented:
-
-* [ ] List anything else that you can get done to improve the app functionality!
 
 ## Video Walkthrough 
 

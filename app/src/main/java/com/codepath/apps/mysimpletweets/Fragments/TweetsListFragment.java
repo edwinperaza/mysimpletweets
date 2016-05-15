@@ -75,6 +75,8 @@ public class TweetsListFragment extends Fragment {
             swipeConfigureColor();
 
             populateTimeline();
+        }else{
+            populateTweetsFromDatabase();
         }
         return view;
     }
@@ -93,6 +95,8 @@ public class TweetsListFragment extends Fragment {
 
     public void populateTimeline() {}
 
+    public void populateTweetsFromDatabase(){}
+
     // Configure the refreshing colors
     public void swipeConfigureColor(){
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
@@ -100,7 +104,6 @@ public class TweetsListFragment extends Fragment {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
     }
-
 
     protected Boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -111,6 +114,4 @@ public class TweetsListFragment extends Fragment {
         }
         return networkConnection;
     }
-
-
 }

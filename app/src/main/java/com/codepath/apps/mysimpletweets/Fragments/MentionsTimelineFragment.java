@@ -28,7 +28,7 @@ public class MentionsTimelineFragment extends TweetsListFragment {
         client.getMentionsTimeline(oldestTweetUid, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
-                tweets.addAll(Tweet.fromJSONArray(json));
+                tweets.addAll(Tweet.fromJSONArray(json, true));
                 aTweets.notifyDataSetChanged();
             }
 
@@ -38,4 +38,12 @@ public class MentionsTimelineFragment extends TweetsListFragment {
             }
         });
     };
+
+    @Override
+    public void populateTweetsFromDatabase(){
+//        tweets.clear();
+        tweets.addAll(Tweet.getAllMentions());
+        aTweets.notifyDataSetChanged();
+    }
+
 }

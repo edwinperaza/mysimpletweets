@@ -51,7 +51,23 @@ public class TwitterClient extends OAuthBaseClient {
         client.get(apiUrl, params, handler);
     }
 
+    public void postFavorites(long uid, AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("/favorites/create.json");
 
+        RequestParams params = new RequestParams();
+        params.put("id", uid);
+
+        client.post(apiUrl, params, handler);
+    }
+
+    public void deleteFavorite(long uid, AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("favorites/destroy.json");
+
+        RequestParams params = new RequestParams();
+        params.put("id", uid);
+
+        client.post(apiUrl, params, handler);
+    }
 
     public void postTweet(String tweet, AsyncHttpResponseHandler handler) {
         String apiUrl = getApiUrl("/statuses/update.json");
@@ -59,6 +75,14 @@ public class TwitterClient extends OAuthBaseClient {
         RequestParams params = new RequestParams();
         params.put("status", tweet);
 
+        client.post(apiUrl, params, handler);
+    }
+
+    public void postRetweet(long uid, AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("statuses/retweet/" + uid + ".json");
+
+        RequestParams params = new RequestParams();
+        params.put("trim_user", true);
         client.post(apiUrl, params, handler);
     }
 

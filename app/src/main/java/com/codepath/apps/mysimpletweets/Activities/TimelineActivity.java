@@ -2,9 +2,11 @@ package com.codepath.apps.mysimpletweets.Activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
@@ -41,27 +43,38 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //Get de ViewPager and set Adapter
-        ViewPager viewpager = (ViewPager) findViewById(R.id.viewpager);
-        viewpager.setAdapter(new TweetsPageAdapter(getSupportFragmentManager()));
-        //Find de Sliding tabStrip and attach the tabStrip to viewpager
-        PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-        tabStrip.setViewPager(viewpager);
-
         if (isNetworkAvailable()) {
             client = TwitterApplication.getRestClient();
             client.getCurrentUser(new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+
                     currentUser = User.fromJSON(response);
+                    SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                    SharedPreferences.Editor edit = pref.edit();
+                    edit.putLong("currentUserUid", currentUser.getUid());
+                    edit.commit();
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                     Log.d("DEBUG", errorResponse.toString());
                 }
-            });
+            }
+            );
+        }else{
+            SharedPreferences pref =
+                    PreferenceManager.getDefaultSharedPreferences(this);
+            long uid = pref.getLong("currentUserUid", 0);
+            currentUser = User.getById(uid);
         }
+
+        //Get de ViewPager and set Adapter
+        ViewPager viewpager = (ViewPager) findViewById(R.id.viewpager);
+        viewpager.setAdapter(new TweetsPageAdapter(getSupportFragmentManager()));
+        //Find de Sliding tabStrip and attach the tabStrip to viewpager
+        PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        tabStrip.setViewPager(viewpager);
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setElevation(0);
@@ -73,11 +86,12 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
     }
 
     private void profileView() {
-        if (isNetworkAvailable()) {
+        //if (isNetworkAvailable()) {
             Intent i = new Intent(this, ProfileActivity.class);
             i.putExtra("user", currentUser);
+            i.putExtra("userId", currentUser.getId());
             startActivity(i);
-        }
+        //}
     }
 
     private void composeTweet() {

@@ -31,7 +31,7 @@ public class HomeTimelineFragment extends TweetsListFragment {
         client.getHomeTimelineBefore(oldestTweetUid, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
-                tweets.addAll(Tweet.fromJSONArray(json));
+                tweets.addAll(Tweet.fromJSONArray(json,false));
                 aTweets.notifyDataSetChanged();
             }
 
@@ -43,6 +43,13 @@ public class HomeTimelineFragment extends TweetsListFragment {
     };
 
     @Override
+    public void populateTweetsFromDatabase(){
+        //tweets.clear();
+        tweets.addAll(Tweet.getAllTimeline());
+        aTweets.notifyDataSetChanged();
+    }
+
+    @Override
     public void populateNewTweetsTimeline (){
         long newestTweetUid = 0;
         if (!tweets.isEmpty()) {
@@ -51,7 +58,7 @@ public class HomeTimelineFragment extends TweetsListFragment {
         client.getHomeTimelineSince(newestTweetUid, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                ArrayList<Tweet> newTweets = Tweet.fromJSONArray(response);
+                ArrayList<Tweet> newTweets = Tweet.fromJSONArray(response,false);
                 if (!newTweets.isEmpty() && newTweets.size()>0) {
                     for (int i = 0; i < newTweets.size(); i++) {
                         aTweets.insert(newTweets.get(i), 0);

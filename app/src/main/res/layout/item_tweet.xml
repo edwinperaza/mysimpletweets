@@ -68,7 +68,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/ivReplyTweet"
-        android:src="@drawable/ic_reply_tweet"
+        android:src="@drawable/ic_reply"
         android:layout_below="@+id/tvBody"
         android:layout_alignLeft="@+id/tvBody"
         android:layout_alignStart="@+id/tvBody"
@@ -82,17 +82,40 @@
         android:layout_below="@+id/tvBody"
         android:layout_toRightOf="@+id/ivReplyTweet"
         android:layout_toEndOf="@+id/ivReplyTweet"
-        android:paddingRight="30dp" />
+        android:paddingRight="10dp" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/ivFavorite"
         android:src="@drawable/ic_favorite"
-        android:layout_below="@+id/tvBody"
+        android:paddingRight="10dp"
+        android:layout_alignTop="@+id/tvCountRetweet"
+        android:layout_toRightOf="@+id/tvCountRetweet"
+        android:layout_toEndOf="@+id/tvCountRetweet" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:id="@+id/tvCountRetweet"
+        android:layout_alignTop="@+id/ivRetweet"
         android:layout_toRightOf="@+id/ivRetweet"
         android:layout_toEndOf="@+id/ivRetweet"
+        android:layout_alignBottom="@+id/ivRetweet"
+        android:gravity="center_vertical"
         android:paddingRight="30dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:id="@+id/tvCountFavorite"
+        android:layout_alignTop="@+id/ivFavorite"
+        android:layout_toRightOf="@+id/ivFavorite"
+        android:layout_toEndOf="@+id/ivFavorite"
+        android:layout_alignBottom="@+id/ivFavorite"
+        android:gravity="center_vertical" />
 
 
 </RelativeLayout>

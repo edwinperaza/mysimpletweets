@@ -1,6 +1,6 @@
 # My Simple Tweets (Twitter API)
 
-> What's Grid Image Search?
+> What's My Simple Tweets?
 
 My Simple Tweets is an android app that allows a user to view home and mentions timelines, view user profiles with user timelines, as well as compose and post a new tweet.
 
